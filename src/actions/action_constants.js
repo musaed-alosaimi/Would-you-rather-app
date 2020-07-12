@@ -1,0 +1,9 @@
+export let USER_LOGIN = "USER_LOGIN";
+export let USER_LOGOUT = "USER_LOGOUT";
+export let GET_USERS = "GET_USERS";
+export let GET_QUESTIONS = "GET_QUESTIONS";
+export let ADD_QUESTION = "ADD_QUESTION";
+export let ANSWER_QUESTION = "ANSWER_QUESTION";
+export let SHOW_LOADING = "SHOW_LOADING";
+export let HIDE_LOADING = "HIDE_LOADING";
+
