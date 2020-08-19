@@ -1,6 +1,6 @@
 import React from 'react'
 import { getIdFromURL, getOptionNumber } from '../utils/helper.js'
-import { Context } from '../AppContext'
+import { MyContext } from '../AppContext'
 import { Route, Link } from 'react-router-dom'
 import { answerQuestion } from '../actions/shared'
 import QuestionResult from './QuestionResult'
@@ -14,7 +14,7 @@ export default class ShowQuestion extends React.Component {
 
 
     render() {
-        return <Context.Consumer>
+        return <MyContext.Consumer>
 
             {(store) => {
 
@@ -83,7 +83,7 @@ export default class ShowQuestion extends React.Component {
             }
             }
 
-        </Context.Consumer>
+        </MyContext.Consumer>
 
 
     }

@@ -1,5 +1,6 @@
 import React from 'react'
 import {handle_add_question} from '../actions/questions'
+import { Redirect } from 'react-router-dom';
 
 export default class AddQuestion extends React.Component{
 
@@ -26,16 +27,24 @@ export default class AddQuestion extends React.Component{
       
           e.preventDefault();
       
-          this.store.dispatch(handle_add_question({optionOneText: this.state.optionOneText, optionTwoText: this.state.optionTwoText, author: this.store.getState().authedUser}));
-      
+          this.store.dispatch(handle_add_question({optionOneText: this.state.optionOneText, optionTwoText: this.state.optionTwoText, author: this.store.getState().auth.authedUser}));
+
+          this.setState({questionSubmitted: true});
         }
       
         state = {
           optionOneText: "",
           optionTwoText: "",
+          questionSubmitted: false
         }
 
     render(){
+
+      if(this.state.questionSubmitted){
+
+        return <Redirect to={'/home'} />
+
+      }
 
         return <div>
 
