@@ -13,11 +13,11 @@ App Features:
 2) start the app by typing 'npm start' into the terminal.<br />
 
 <h2>How to use the app</h2>
-1) First you need to sign in to have benefit of the app's features.
-2) To sign-in you need select one of the users available on the login screen
-3) after selecting a user, and pressing Login button, you will signed in
-4) after signing you will see 3 options on the header of the screen which are Home, Add Question, Leaderboard.
-5) And the answered and unansered questions will be shown as well
+1) First you need to sign in to have benefit of the app's features.<br />
+2) To sign-in you need select one of the users available on the login screen.<br />
+3) after selecting a user, and pressing Login button, you will signed in.<br />
+4) after signing you will see 3 options on the header of the screen which are Home, Add Question, Leaderboard.<br />
+5) And the answered and unansered questions will be shown as well.<br />
 
 
 
