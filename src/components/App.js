@@ -1,122 +1,150 @@
 import React from 'react';
 import logo from '../logo.svg';
 import '../App.css';
-import { getInitialDataAction } from '../actions/shared'
-import { Route, Link, Switch } from 'react-router-dom'
+import { getInitialDataAction, hideLoading } from '../actions/shared'
+import { Route, Switch } from 'react-router-dom'
 import QuestionsComponent from './QuestionsComponent'
 import ShowQuestion from './ShowQuestion';
-import { Context } from '../AppContext'
 import AddQuestion from './AddQuestion'
 import Leaderboard from './Leaderboard';
 import AppHeader from './AppHeader';
 import LoginComponent from './LoginComponent'
+import { connect } from 'react-redux'
+import { userLogin } from '../actions/authedUser';
+import { getIdFromURL } from '../utils/helper';
 
 
 class App extends React.Component {
 
-  static contextTypes = Context;
-
   componentDidMount() {
 
-    console.log(this.context.store.getState());
+    this.props.dispatch(getInitialDataAction());
 
-    
-    // store.subscribe(() => { this.forceUpdate() })
-    // store.dispatch(getInitialDataAction());
+    let authedUser = localStorage.getItem('authedUser')
+
+    if (authedUser !== "null") {
+
+      this.props.dispatch(userLogin(authedUser))
+
+    }
+
+    let url = window.location.href;
+
+    if (!url.includes('showQuestion')) {
+
+      localStorage.setItem('routeAfterLogin', 'null')
+
+    }
 
 
   }
 
   render() {
 
-    return ;
+    let { storeState } = this.props;
+
+    let question_id = getIdFromURL();
+    
+    return (
+      <div>
+
+        <AppHeader />
+
+        <div id="container">
+
+          {storeState.auth.status ?
+
+            <div>
+              <Switch>
+                <Route path={['/', '/home', '/home/AnsweredQuestions', '/home/unAnsweredQuestions']} exact>
+
+                  <QuestionsComponent />
+
+                </Route>
+
+                <Route path="/add" exact>
+
+                  <AddQuestion />
+
+                </Route>
+
+                <Route path="/leaderboard" exact>
+
+                  <Leaderboard />
+
+                </Route>
 
 
-    // return (<Context.Consumer>
+                <Route path="/showQuestion/">
 
-    //   {(store) => {
+                  <ShowQuestion />
 
+                </Route>
 
-    //     let storeState = store.getState();
-    //     let users = storeState.users;
+                <Route path={'/Login'} exact>
 
-    //     return <div>
+                  <LoginComponent />
 
-    //       <AppHeader store={store} />
+                </Route>
 
-    //       <div id="container">
+              </Switch>
 
-    //         <Switch>
+            </div>
 
-    //           <Route path={'/Login'} >
+            :
 
-    //             <LoginComponent />
+            <div>
 
-    //           </Route>
+              <Switch>
 
-    //           {store.getState().auth.status ?
+                <Route path={'/Login'} exact>
 
-    //             <div>
+                  <LoginComponent />
 
-    //               <Route path={['/', '/home', '/home/AnsweredQuestions', '/home/unAnsweredQuestions']} exact>
+                </Route>
 
-    //                 <QuestionsComponent store={store} />
+                <Route path="/">
 
-    //               </Route>
+                  <div id="Login">
 
-    //               <Route path="/add" exact>
+                    {storeState.auth === {} || !storeState.auth.status && <h3>You aren't Signed In, so you have to Sign In to use the app</h3>}
 
-    //                 <AddQuestion store={store} />
+                  </div>
 
-    //               </Route>
+                </Route>
 
-    //               <Route path="/leaderboard" exact>
+              </Switch>
 
-    //                 <Leaderboard store={store} />
-
-    //               </Route>
-
-    //               <Route path="/showQuestion/">
-
-    //                 <ShowQuestion />
-
-    //               </Route>
-
-    //             </div>
-
-    //             :
-
-    //             <Route path="/">
-
-    //               <div id="Login">
-
-    //                 <h3>You aren't Signed In, so you have to Sign In to use the app</h3>
-
-    //               </div>
-
-    //             </Route>
-
-    //           }}
+              <Route path='/showQuestion/' render={() => (localStorage.setItem('routeAfterLogin', '/showQuestion/' + question_id))} />
 
 
-    //       </Switch>
+            </div>
 
-    //       </div>
+          }
 
-
-    //     </div>
-
-    //   }}
-
-    // </Context.Consumer>
+        </div>
 
 
-    // );
+      </div >
+
+    );
 
   }
 
 }
 
+function mapDispatchToProps(dispatch) {
 
+  return {
+    dispatch,
+  }
+}
 
-export default App
+function mapStateToProps(storeState) {
+
+  return {
+    storeState,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

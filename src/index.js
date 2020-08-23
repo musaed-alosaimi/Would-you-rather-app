@@ -4,22 +4,26 @@ import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from "react-router-dom"
-import { MyContext } from './AppContext'
+import { auth_reducer } from './reducers/authedUser'
 import { questions_reducer } from './reducers/questions'
 import { users_reducer } from './reducers/users'
-import { auth_reducer } from './reducers/authedUser'
-import { loading_reducer } from './reducers/shared'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { loading_reducer } from './reducers/shared'
 import thunk from 'redux-thunk'
+import { Provider } from 'react-redux'
+
+document.title = 'Would your rather app'
 
 let store = createStore(combineReducers({ questions: questions_reducer, users: users_reducer, auth: auth_reducer, loading: loading_reducer }), applyMiddleware(thunk))
-export default store;
+
 ReactDOM.render(
-  <MyContext.Provider value={store}>
-    <Router>
-      <App />
-    </Router>
-  </MyContext.Provider>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+  </React.StrictMode>,
   document.getElementById('root')
 );
 

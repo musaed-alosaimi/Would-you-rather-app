@@ -366,13 +366,10 @@ nav ul li:hover {
 }
 
 #questionResult #userInfo {
-    width: 40%;
-    display: inline-block;
     text-align: center;
 }
 
 #questionResult #result {
-    display: inline-block;
     text-align: center;
     vertical-align: top;
     border-left: 1px solid #ccc;
@@ -386,6 +383,16 @@ nav ul li:hover {
     text-align: center;
     background: #555;
     color: #EEE;
+}
+
+#answeredFirstTimeText{
+
+    border: 1px solid #CCC;
+    padding: 5px;
+    margin: 0px;
+    text-align: center;
+    background-color: rgb(52, 119, 72);
+
 }
 
 #Login {
@@ -405,3 +412,11 @@ nav ul li:hover {
 }
 
 .signInButton {}
+
+.loadingText{
+    text-align: center
+}
+
+.Error404Text{
+    text-align: center;
+}

@@ -1,16 +1,21 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-export default class Leaderboard extends React.Component {
+class Leaderboard extends React.Component {
 
-    store = this.props.store;
 
     sortedUsers() {
 
-        let storeState = this.store.getState();
+
+        let {storeState} = this.props
+
         let users = storeState.users;
         let sortedUsers = [];
 
         Object.keys(users).map((key) => {
+
+            if(Object.keys(storeState.users).length === sortedUsers.le)
+            return
 
             let user = users[key];
             let userQuestions = user.questions;
@@ -18,7 +23,7 @@ export default class Leaderboard extends React.Component {
             let score1 = userAnswersLength + userQuestions.length;
 
             if (sortedUsers.length === 0) {
-                sortedUsers.push(user);
+                sortedUsers = [user];
                 return;
             }
 
@@ -36,7 +41,7 @@ export default class Leaderboard extends React.Component {
 
                 } else if (index === lastIndex) {
 
-                    sortedUsers.push(user);
+                    sortedUsers[lastIndex+1] = user;
 
                 }
 
@@ -50,7 +55,7 @@ export default class Leaderboard extends React.Component {
 
     render() {
 
-        let storeState = this.store.getState();
+        let {storeState, dispatch} = this.props;
         let users = storeState.users;
         let sortedUsers = this.sortedUsers();
 
@@ -76,7 +81,7 @@ export default class Leaderboard extends React.Component {
 
                             <div className="userInfo"><span className="name">{currentUser.name}</span><img src={`${currentUser.avatarURL}`} className="userImage" /></div>
                             <div className="records">
-                                <h3>Answered Questions : {userQuestions.length}</h3>
+                                <h3>Number of Questions : {userQuestions.length}</h3>
                                 <h3>Answered Questions : {userAnswersLength}</h3>
                             </div>
                             <div className="totalScore">
@@ -104,3 +109,20 @@ export default class Leaderboard extends React.Component {
 
 
 }
+
+
+function mapStateToProps(storeState){
+
+    return {
+        storeState,
+    }
+}
+
+function mapDispatchToState(dispatch){
+
+    return {
+        dispatch,
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToState)(Leaderboard)

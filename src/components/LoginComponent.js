@@ -1,101 +1,120 @@
-import React, {connect} from 'react'
+import React from 'react';
+import { connect } from 'react-redux'
 import { SHOW_LOADING } from '../actions/action_constants'
-import { userLogin } from '../actions/authedUser'
 import { Redirect } from 'react-router-dom'
+import { userLogin } from '../actions/authedUser'
 import { showLoading } from '../actions/shared'
-import { MyContext } from '../AppContext'
-
 
 class LoginComponent extends React.Component {
 
-    storeState = this.props.state;
+  state = { selectedUser: "", }
 
-    dispatch = this.props.dispatch;
+  onUserSelectionChanged(e) {
 
-    onLoginSubmitted(e) {
+    let value = e.target.value;
 
-        e.preventDefault();
+    this.setState((previusState) => ({ ...previusState, selectedUser: value, }));
 
-        this.dispatch(showLoading());
+  }
 
-        this.dispatch(userLogin(this.state.selectedUser))
+  onLoginSubmitted(e) {
 
-    }
+    e.preventDefault();
 
-    onUserSelectionChanged(e) {
+    localStorage.setItem('authedUser', this.state.selectedUser)
 
-        let value = e.target.value;
+    this.props.dispatch(userLogin(this.state.selectedUser))
 
-        this.setState({ selectedUser: value });
+  }
 
-    }
-
-    state = { selectedUser: "" }
+  componentDidMount() {
 
 
-    render() {
+
+  }
 
 
-        return <MyContext.Consumer>
+  render() {
 
-            {(store) => {
+    let { storeState } = this.props
 
-                let storeState = store.getState();
-                let users = storeState.users;
+    console.log(storeState.auth)
 
+    let { loading, users } = storeState
 
-                return <div id="Login">
+    let routeAfterLogin = localStorage.getItem('routeAfterLogin')
 
-                    {this.storeState.loading === SHOW_LOADING &&
-                        <h3>Loading ...</h3>
-                    }
-                    <h3>Login To Your Account</h3>
+    return <div id="Login">
 
-                    <form onSubmit={(e) => this.onLoginSubmitted(e)}>
+      {loading === SHOW_LOADING &&
+        <h3>Loading ...</h3>
+      }
+      <h3>Login To Your Account</h3>
 
-                        <select value={this.state.selectedUser} onChange={(e) => this.onUserSelectionChanged(e)}>
+      <form onSubmit={(e) => this.onLoginSubmitted(e)}>
 
-                            <option>Select a user</option>
+        <select value={this.state.selectedUser} onChange={(e) => this.onUserSelectionChanged(e)}>
 
-                            {Object.keys(users).map((key) => {
+          <option>Select a user</option>
 
-                                let user = users[key];
-                                return <option value={key}>{user.name}</option>
+          {Object.keys(users).map((key) => {
 
-                            })}
-                        </select>
+            let user = users[key];
+            return <option key={key} value={key}>{user.name}</option>
 
-                        <input type="submit" value="Login" className="primary-button" disabled={this.state.selectedUser === ""} />
+          })}
+        </select>
 
-                    </form>
+        <input type="submit" value="Login" className="primary-button" disabled={this.state.selectedUser === ""} />
 
-                    {this.storeState.auth.status &&
-
-                        <Redirect
-                            to={{
-                                pathname: "/Home",
-                                search: "",
-                                state: {}
-                            }}
-                        />
+      </form>
 
 
-                    }
+      {storeState.auth.status &&
 
-                </div>
+        (routeAfterLogin !== 'null' ?
 
+          <Redirect
+            to={{
+              pathname: routeAfterLogin,
+              search: "",
+              state: {}
             }}
+          />
 
 
-        </MyContext.Consumer>
+          :
+
+          <Redirect
+            to={{
+              pathname: "/Home",
+              search: "",
+              state: {}
+            }}
+          />
+
+        )
+
+      }
+
+    </div>
 
 
-
-
-    }
-
-
-
+  }
 }
 
-export default LoginComponent
+function mapDispatchToProps(dispatch) {
+
+  return {
+    dispatch,
+  }
+}
+
+function mapStateToProps(storeState) {
+
+  return {
+    storeState,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent)

@@ -1,26 +1,22 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Context } from '../AppContext'
-import {showLoading} from '../actions/shared'
-
-const MyContext = React.createContext({});
+import {showLoading, hideLoading} from '../actions/shared'
+import { SHOW_LOADING } from '../actions/action_constants'
 
 class QuestionsComponent extends React.Component {
 
-    store = this.props.store;
-
     componentWillMount() {
-
-        this.store.dispatch(showLoading());
-
+        
     }
 
     render() {
 
-        let state = this.store.getState();
+        let {dispatch, storeState} = this.props;
 
-        let { questions, users, auth } = state;
+        let { questions, users, auth } =storeState;
+
+        let authedUser = auth.authedUser;
 
         return <div>
 
@@ -31,7 +27,9 @@ class QuestionsComponent extends React.Component {
                     <Link to="/Home/unAnsweredQuestions"><li>Unanswered Questions</li></Link>
                 </ul>
 
-                <Route path={['/', '/Home', '/answeredQuestions']}>
+                {storeState.loading === SHOW_LOADING && <h2 className="loadingText">Loading ..</h2>}
+
+                <Route path={['/', '/Home', '/Home/answeredQuestions']} exact>
 
                     <ul className="quesitonsList">
 
@@ -39,8 +37,6 @@ class QuestionsComponent extends React.Component {
 
                             let currentQuestion = questions[key];
                             let questionAuthor = users[currentQuestion.author];
-
-                            let authedUser = auth.authedUser;
 
                             let isAnswered = Object.keys(users[authedUser].answers).includes(currentQuestion.id);
 
@@ -70,8 +66,6 @@ class QuestionsComponent extends React.Component {
                 </Route>
 
                 <Route path={['/home/unAnsweredQuestions']}>
-
-                    {console.log("unAnsweredQuestions")}
 
                     <ul className="quesitonsList">
 
@@ -119,5 +113,18 @@ class QuestionsComponent extends React.Component {
 
 }
 
+function mapDispatchToProps(dispatch){
 
-export default QuestionsComponent
+    return {
+        dispatch,
+    }
+}
+
+function mapStateToProps(storeState){
+
+    return {
+        storeState,
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionsComponent)

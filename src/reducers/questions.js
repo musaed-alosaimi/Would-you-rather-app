@@ -11,11 +11,9 @@ export function questions_reducer(state = [], action){
         return {...state, [action.formattedQuestion.id]: action.formattedQuestion};
     }else if(action.type === ANSWER_QUESTION){
 
-        let newState = state;
+        let newState = {...state};
 
         newState[action.qid][action.answer].votes.push(action.authedUser);
-
-        console.log(newState);
 
         return newState;
 

@@ -1,12 +1,14 @@
-import { ANSWER_QUESTION, SHOW_LOADING , HIDE_LOADING } from './action_constants'
+import { ANSWER_QUESTION, SHOW_LOADING, HIDE_LOADING } from './action_constants'
 import { getUsers } from './users'
 import { getQuestions } from './questions'
 import { getInitialData, saveAnswer } from '../utils/API'
 
 export function getInitialDataAction() {
 
-    return (dispatch) => {
+    return (dispatch,state) => {
 
+        dispatch(showLoading());
+        
         getInitialData().then(({ users, questions }) => {
 
             dispatch(getUsers(users));
