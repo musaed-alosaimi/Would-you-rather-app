@@ -10,7 +10,8 @@ App Features:
 
 <h2>Launching the app</h2>
 1) install node.js <br />
-2) start the app by typing 'npm start' into the terminal.<br />
+2) install npm in the project by typeing 'npm install' in the project's directory inside the terminal.
+3) start the app by typing 'npm start' into the terminal.<br />
 
 <h2>How to use the app</h2>
 1) First you need to sign in to have benefit of the app's features.<br />
