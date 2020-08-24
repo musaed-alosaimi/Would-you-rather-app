@@ -22,7 +22,7 @@ class App extends React.Component {
 
     let authedUser = localStorage.getItem('authedUser')
 
-    if (authedUser !== "null") {
+    if (authedUser !== "null" && authedUser !== null) {
 
       this.props.dispatch(userLogin(authedUser))
 
