@@ -15,7 +15,7 @@ class AppHeader extends React.Component {
 
     render() {
 
-        let {storeState, dispatch} = this.props
+        let {storeState} = this.props
 
         let authedUser = storeState.auth.authedUser;
         let users = storeState.users;
@@ -38,7 +38,7 @@ class AppHeader extends React.Component {
 
                 <div id="userInfo">
 
-                    <img src={user.avatarURL} id="userImage" />
+                    <img src={user.avatarURL} id="userImage" alt="" />
 
                     <div id="rightSide">
                         <h4>Hello {user.name}</h4>

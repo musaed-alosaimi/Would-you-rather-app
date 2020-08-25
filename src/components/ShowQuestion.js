@@ -1,25 +1,34 @@
 import React from 'react'
 import { getIdFromURL } from '../utils/helper.js'
-import { Context } from '../AppContext'
-import { Route, Link } from 'react-router-dom'
-import { answerQuestion } from '../actions/shared'
-import {connect} from 'react-redux'
+import { Route, Link, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 import QuestionResult from './QuestionResult'
+import QuestionNotFoundComponent from './QuestionNotFoundComponent'
 
 class ShowQuestion extends React.Component {
 
+    state = {
+        haveAnswered: false,
+        directToHome: false,
+    }
+
     componentDidMount() {
 
+        let { storeState } = this.props;
+        let { users, auth } = storeState;
+        let question_id = getIdFromURL();
+
+        let SignedUser = users[auth.authedUser]
+
+        if (users.length !== 0) {
+
+            if (Object.keys(SignedUser.answers).includes(question_id))
+                this.setState({ haveAnswered: true, })
+
+        }
+
+
     }
-
-
-    onQuestionAnswered = () => {
-
-        
-
-
-    }
-
 
     render() {
 
@@ -34,41 +43,44 @@ class ShowQuestion extends React.Component {
             }
         };
 
-        let userDefaultObj = {
-            id: '',
-            name: '',
-            avatarURL: "",
-            answers: {}
-        };
-
-        let { storeState, dispatch } = this.props;
-
-        
-        let authedUser = storeState.auth.authedUser;
+        let { storeState } = this.props;
 
         let question_id = getIdFromURL();
 
-        if(!Object.keys(storeState.questions).includes(question_id))
-        return <div className='Error404Text'><h2>404</h2><h2>The question you are looking for doesn't exist.</h2></div>
+        if (!Object.keys(storeState.questions).includes(question_id))
+            return <QuestionNotFoundComponent />
+
 
         let currentQuestion = storeState.questions[question_id] === undefined ? questionDefaultObj : storeState.questions[question_id];
         let option_1 = currentQuestion.optionOne;
         let option_2 = currentQuestion.optionTwo;
 
+        let users = storeState.users
+
+        let author = users[currentQuestion.author]
+
+        let answer = storeState.users[storeState.auth.authedUser].answers[question_id]
+
         return <div>
 
-            <Route path={`/showQuestion/:question_id`} exact >
+            {this.state.haveAnswered &&
+                <Redirect to={'/questions/' + question_id + '/' + (answer === 'optionOne' ? 'option_1' : 'option_2')} />
+            }
+
+            <Route path={`/questions/:question_id`} exact >
                 <div id="showQuestion">
 
-                    <h3>Show Question</h3>
+                    <img src={author.avatarURL} id="authorImage" alt="" />
+
+                    <h3>{author.name} asks : </h3>
 
                     <div>
 
-                        <h4>Would you rather ?</h4>
+                        <h2>Would you rather ?</h2>
 
                         <div id="options">
-                            <Link to={`${question_id}/option_1`}><div className="option" id="firstOption"><h4>{option_1.text}</h4></div></Link>
-                            <Link to={`${question_id}/option_2`}><div className="option" id="secondOption"><h4>{option_2.text}</h4></div></Link>
+                            <Link to={`${question_id}/option_1`}><div className="option">{option_1.text}</div></Link>
+                            <Link to={`${question_id}/option_2`}><div className="option">{option_2.text}</div></Link>
                         </div>
 
                     </div>
@@ -77,8 +89,8 @@ class ShowQuestion extends React.Component {
 
             </Route>
 
-            <Route path={[`/showQuestion/:question_id/option_1`, `/showQuestion/:question_id/option_2`]}>
-                
+            <Route path={[`/questions/:question_id/option_1`, `/questions/:question_id/option_2`]}>
+
                 <QuestionResult questionId={question_id} />
 
             </Route>
@@ -91,18 +103,18 @@ class ShowQuestion extends React.Component {
 
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
 
     return {
         dispatch,
     }
-  }
-  
-  function mapStateToProps(storeState){
-  
+}
+
+function mapStateToProps(storeState) {
+
     return {
         storeState,
     }
-  }
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(ShowQuestion)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShowQuestion)

@@ -216,6 +216,13 @@ nav ul li:hover {
     text-align: center;
 }
 
+#showQuestion #authorImage{
+
+    width: 95px;
+    height: 95px;
+
+}
+
 #showQuestion #options {
     font-size: 18px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -224,29 +231,17 @@ nav ul li:hover {
 
 #showQuestion #options .option {
     padding: 75px;
-    background: #777;
+    background: #555;
     display: inline-block;
-    margin: 0px 10px 0px 10px;
-    background: #BBB;
+    margin: 10px;
     cursor: pointer;
+    border-radius: 15px;
+    color: #FFF;
+    font-size: 24px;
 }
 
-#showQuestion #options #firstOption {
-    border-top-right-radius: 25px;
-    border-bottom-left-radius: 25px;
-}
-
-#showQuestion #options #firstOption:hover {
-    background: #CCC;
-}
-
-#showQuestion #options #secondOption {
-    border-top-left-radius: 25px;
-    border-bottom-right-radius: 25px;
-}
-
-#showQuestion #options #secondOption:hover {
-    background: #CCC;
+#showQuestion #options .option:hover {
+    background: #888;
 }
 
 #leaderboard {
@@ -372,13 +367,24 @@ nav ul li:hover {
 #questionResult #result {
     text-align: center;
     vertical-align: top;
-    border-left: 1px solid #ccc;
-    padding: 30px;
+}
+
+#questionResult #result .optionBox{
+
+    margin: 10px;
+
+}
+
+#questionResult #result #ChosenAnswer{
+
+    border-radius: 5px;
+    border: 1px solid rgb(52, 119, 72);
+
 }
 
 #questionResult #answeredQuestionText {
     border: 1px solid #CCC;
-    padding: 5px;
+    padding: 20px;
     margin: 0px;
     text-align: center;
     background: #555;
@@ -388,7 +394,7 @@ nav ul li:hover {
 #answeredFirstTimeText{
 
     border: 1px solid #CCC;
-    padding: 5px;
+    padding: 15px;
     margin: 0px;
     text-align: center;
     background-color: rgb(52, 119, 72);

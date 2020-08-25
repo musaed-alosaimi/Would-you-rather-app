@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { SHOW_LOADING } from '../actions/action_constants'
 import { Redirect } from 'react-router-dom'
 import { userLogin } from '../actions/authedUser'
-import { showLoading } from '../actions/shared'
 
 class LoginComponent extends React.Component {
 
@@ -37,9 +36,7 @@ class LoginComponent extends React.Component {
   render() {
 
     let { storeState } = this.props
-
-    console.log(storeState.auth)
-
+    
     let { loading, users } = storeState
 
     let routeAfterLogin = localStorage.getItem('routeAfterLogin')

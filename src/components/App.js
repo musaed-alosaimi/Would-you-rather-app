@@ -1,8 +1,7 @@
 import React from 'react';
-import logo from '../logo.svg';
 import '../App.css';
-import { getInitialDataAction, hideLoading } from '../actions/shared'
-import { Route, Switch } from 'react-router-dom'
+import { getInitialDataAction } from '../actions/shared'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import QuestionsComponent from './QuestionsComponent'
 import ShowQuestion from './ShowQuestion';
 import AddQuestion from './AddQuestion'
@@ -12,6 +11,7 @@ import LoginComponent from './LoginComponent'
 import { connect } from 'react-redux'
 import { userLogin } from '../actions/authedUser';
 import { getIdFromURL } from '../utils/helper';
+import PageNotFoundComponent from './PageNotFoundComponent'
 
 
 class App extends React.Component {
@@ -30,7 +30,7 @@ class App extends React.Component {
 
     let url = window.location.href;
 
-    if (!url.includes('showQuestion')) {
+    if (!url.includes('questions')) {
 
       localStorage.setItem('routeAfterLogin', 'null')
 
@@ -44,7 +44,7 @@ class App extends React.Component {
     let { storeState } = this.props;
 
     let question_id = getIdFromURL();
-    
+
     return (
       <div>
 
@@ -75,7 +75,7 @@ class App extends React.Component {
                 </Route>
 
 
-                <Route path="/showQuestion/">
+                <Route path="/questions/">
 
                   <ShowQuestion />
 
@@ -86,6 +86,9 @@ class App extends React.Component {
                   <LoginComponent />
 
                 </Route>
+
+                <Route path="/404" component={PageNotFoundComponent} />
+                <Redirect to="/404" />
 
               </Switch>
 
@@ -107,15 +110,18 @@ class App extends React.Component {
 
                   <div id="Login">
 
-                    {storeState.auth === {} || !storeState.auth.status && <h3>You aren't Signed In, so you have to Sign In to use the app</h3>}
+                    {(storeState.auth === {} || !storeState.auth.status) && <h3>You aren't Signed In, so you have to Sign In to use the app</h3>}
 
                   </div>
 
                 </Route>
 
+                <Route path="/404" component={() => (<h2>Not Found 404</h2>)} />
+                <Redirect to="/404" />
+
               </Switch>
 
-              <Route path='/showQuestion/' render={() => (localStorage.setItem('routeAfterLogin', '/showQuestion/' + question_id))} />
+              <Route path='/questions/' render={() => (localStorage.setItem('routeAfterLogin', '/showQuestion/' + question_id))} />
 
 
             </div>

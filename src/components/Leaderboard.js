@@ -14,8 +14,8 @@ class Leaderboard extends React.Component {
 
         Object.keys(users).map((key) => {
 
-            if(Object.keys(storeState.users).length === sortedUsers.le)
-            return
+            if(Object.keys(storeState.users).length === sortedUsers.length)
+            return ''
 
             let user = users[key];
             let userQuestions = user.questions;
@@ -24,7 +24,7 @@ class Leaderboard extends React.Component {
 
             if (sortedUsers.length === 0) {
                 sortedUsers = [user];
-                return;
+                return ''
             }
 
             sortedUsers.map((user2, index) => {
@@ -45,7 +45,11 @@ class Leaderboard extends React.Component {
 
                 }
 
+                return ''
+
             })
+
+            return ''
 
         })
 
@@ -55,7 +59,7 @@ class Leaderboard extends React.Component {
 
     render() {
 
-        let {storeState, dispatch} = this.props;
+        let {storeState} = this.props;
         let users = storeState.users;
         let sortedUsers = this.sortedUsers();
 
@@ -79,7 +83,10 @@ class Leaderboard extends React.Component {
 
                         return <li key={id}>
 
-                            <div className="userInfo"><span className="name">{currentUser.name}</span><img src={`${currentUser.avatarURL}`} className="userImage" /></div>
+                            <div className="userInfo">
+                                <span className="name">{currentUser.name}</span>
+                                <img src={`${currentUser.avatarURL}`} className="userImage" alt="" />
+                                </div>
                             <div className="records">
                                 <h3>Number of Questions : {userQuestions.length}</h3>
                                 <h3>Answered Questions : {userAnswersLength}</h3>

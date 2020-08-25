@@ -4,7 +4,7 @@ export function getIdFromURL(){
 
     let url = window.location.href;
 
-    let keyword = "/showQuestion";
+    let keyword = "/questions";
 
     let subpath = url.substring(url.lastIndexOf(keyword)+keyword.length+1);
 

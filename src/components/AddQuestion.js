@@ -1,6 +1,7 @@
 import React from 'react'
 import { handle_add_question } from '../actions/questions'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 class AddQuestion extends React.Component {
 
@@ -24,6 +25,7 @@ class AddQuestion extends React.Component {
 
     this.setState({ optionTwoText: optionText });
 
+
   }
 
   addQuestionSubmitted(e) {
@@ -34,6 +36,7 @@ class AddQuestion extends React.Component {
 
     this.setState((previousState) => ({...previousState, isQuestionAdded: true, }))
 
+
   }
 
   componentDidMount(){
@@ -43,8 +46,7 @@ class AddQuestion extends React.Component {
 
   render() {
 
-    let {storeState} = this.props
-
+    
     return <div>
 
       <div id="addQuestion">
@@ -65,7 +67,7 @@ class AddQuestion extends React.Component {
 
           </form>
 
-          {this.state.isQuestionAdded && <h3 style={{color: 'rgb(52, 119, 72)', }}>The question is added.</h3>}
+          {this.state.isQuestionAdded && <h3 style={{color: 'rgb(52, 119, 72)', }}><Redirect to={'/Home'} /></h3>}
 
 
       </div>

@@ -1,18 +1,13 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import {showLoading, hideLoading} from '../actions/shared'
 import { SHOW_LOADING } from '../actions/action_constants'
 
 class QuestionsComponent extends React.Component {
 
-    componentWillMount() {
-        
-    }
-
     render() {
 
-        let {dispatch, storeState} = this.props;
+        let {storeState} = this.props;
 
         let { questions, users, auth } =storeState;
 
@@ -42,10 +37,10 @@ class QuestionsComponent extends React.Component {
 
                             if (isAnswered) {
 
-                                return <Link key={key} to={`/showQuestion/${key}`}><li>
+                                return <Link key={key} to={`/questions/${key}`}><li>
 
                                     {/* TODO: Change the avatar_placeholder to the avatar image url from _DATA.js */}
-                                    <div className="userInfo"><h4>{questionAuthor.name}</h4><img src={`${questionAuthor.avatarURL}`} className="userImage" /></div>
+                                    <div className="userInfo"><h4>{questionAuthor.name}</h4><img src={`${questionAuthor.avatarURL}`} className="userImage" alt="" /></div>
                                     <div className="questionInfo">
 
                                         <h3>Would you rather ?</h3>
@@ -57,6 +52,8 @@ class QuestionsComponent extends React.Component {
                                 </li></Link>
 
                             }
+
+                            return ""
 
 
                         })}
@@ -80,10 +77,10 @@ class QuestionsComponent extends React.Component {
 
                             if (!isAnswered) {
 
-                                return <Link key={key} to={`/showQuestion/${key}`}><li>
+                                return <Link key={key} to={`/questions/${key}`}><li>
 
                                     {/* TODO: Change the avatar_placeholder to the avatar image url from _DATA.js */}
-                                    <div className="userInfo"><h4>{questionAuthor.name}</h4><img src={`${questionAuthor.avatarURL}`} className="userImage" /></div>
+                                    <div className="userInfo"><h4>{questionAuthor.name}</h4><img src={`${questionAuthor.avatarURL}`} className="userImage" alt="" /></div>
                                     <div className="questionInfo">
 
                                         <h3>Would you rather ?</h3>
@@ -96,6 +93,7 @@ class QuestionsComponent extends React.Component {
 
                             }
 
+                            return ""
 
                         })}
 
