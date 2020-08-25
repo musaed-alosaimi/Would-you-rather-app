@@ -5,17 +5,16 @@ import { getInitialData, saveAnswer } from '../utils/API'
 
 export function getInitialDataAction() {
 
-    return (dispatch,state) => {
+    return (dispatch, state) => {
 
         dispatch(showLoading());
-        
+
         getInitialData().then(({ users, questions }) => {
 
             dispatch(getUsers(users));
             dispatch(getQuestions(questions));
 
             dispatch(hideLoading());
-
 
         })
 

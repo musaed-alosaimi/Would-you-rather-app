@@ -4,9 +4,12 @@ export function loading_reducer(state = [], action){
 
     if(action.type === SHOW_LOADING){
 
-        return SHOW_LOADING
+        return action.type
+    }else if(action.type === HIDE_LOADING){
+
+        return action.type
     }else{
-        return HIDE_LOADING
+        return state
     }
 
 }

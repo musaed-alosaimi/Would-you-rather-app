@@ -13,7 +13,6 @@ import { userLogin } from '../actions/authedUser';
 import { getIdFromURL } from '../utils/helper';
 import PageNotFoundComponent from './PageNotFoundComponent'
 
-
 class App extends React.Component {
 
   componentDidMount() {
@@ -115,9 +114,6 @@ class App extends React.Component {
                   </div>
 
                 </Route>
-
-                <Route path="/404" component={() => (<h2>Not Found 404</h2>)} />
-                <Redirect to="/404" />
 
               </Switch>
 

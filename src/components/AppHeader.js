@@ -1,21 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import {userLogout} from '../actions/authedUser'
+import { userLogout } from '../actions/authedUser'
 import { connect } from 'react-redux';
+import { HIDE_LOADING } from '../actions/action_constants';
 
 class AppHeader extends React.Component {
 
-    SignOut(){
+    SignOut() {
 
         localStorage.setItem('authedUser', null)
         this.props.dispatch(userLogout());
-        
+
     }
 
 
     render() {
 
-        let {storeState} = this.props
+        let { storeState } = this.props
 
         let authedUser = storeState.auth.authedUser;
         let users = storeState.users;
@@ -34,19 +35,29 @@ class AppHeader extends React.Component {
 
             {storeState.auth.status ?
 
-            
-
                 <div id="userInfo">
 
-                    <img src={user.avatarURL} id="userImage" alt="" />
+                    {(storeState.loading === HIDE_LOADING ?
 
-                    <div id="rightSide">
-                        <h4>Hello {user.name}</h4>
+                        <div>
+                            <img src={user.avatarURL} id="userImage" alt="" />
 
-                        <Link to="/Login" onClick={() => this.SignOut()}><span className="primary-button">SignOut</span></Link>
-                    </div>
+                            <div id="rightSide">
+                                <h4>Hello {user.name}</h4>
+
+                                <Link to="/Login" onClick={() => this.SignOut()}><span className="primary-button">SignOut</span></Link>
+                            </div>
+
+                        </div>
+
+                        :
+
+                        <h4>Loading ..</h4>
+
+                    )}
 
                 </div>
+
 
                 :
 
@@ -66,14 +77,14 @@ class AppHeader extends React.Component {
 
 }
 
-function mapStateToProps(storeState){
+function mapStateToProps(storeState) {
 
     return {
         storeState,
     }
 }
 
-function mapDispatchToState(dispatch){
+function mapDispatchToState(dispatch) {
 
     return {
         dispatch,
